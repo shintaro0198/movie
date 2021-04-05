@@ -1,19 +1,17 @@
 <template>
   <div id="home">
     <Header></Header>
-    <v-card>
-      <v-card-title>
-        Movies
-      </v-card-title>
-      <v-card-text>
-      </v-card-text>
-    </v-card>
+    <NowAvailable></NowAvailable>
   </div>
 </template>
 
 <script>
-export default {
 
+import Header from '../components/Header'
+export default  {
+  components:{
+    Header
+  }
 }
 </script>
 
