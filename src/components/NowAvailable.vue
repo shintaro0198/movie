@@ -19,7 +19,7 @@
         :key="item.title">
         </v-rating>
         <p>{{item.rating}}</p>
-        <v-row>
+        <v-row class="mb-5">
           <v-col class="text-center">
             <v-btn class="mr-5" color="cyan">Share</v-btn>
             <v-btn color="primary">Close</v-btn>

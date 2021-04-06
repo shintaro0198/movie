@@ -6,11 +6,15 @@ import vuetify from './plugins/vuetify';
 import Header from './components/Header.vue'
 import HeaderAuth from './components/HeaderAuth.vue'
 import NowAvailable from './components/NowAvailable.vue'
+import Popular from './components/Popular.vue'
+import Movies from './components/Movies.vue'
 
 Vue.config.productionTip = false
 Vue.component('Header', Header)
 Vue.component('HeaderAuth',HeaderAuth)
-Vue.component('NowAvailable',NowAvailable)
+Vue.component('NowAvailable', NowAvailable)
+Vue.component('Popular', Popular)
+Vue.component('Movies',Movies)
 new Vue({
   router,
   store,

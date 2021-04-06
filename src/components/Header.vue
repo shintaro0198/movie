@@ -1,7 +1,7 @@
 <template>
   <div id="header">
     <v-app-bar width="100%" fluid id="vApp">
-      <v-app-bar-title class="ml-5">
+      <v-app-bar-title class="ml-5" :style="vTitle">
         Review Movies
       </v-app-bar-title>
       <v-spacer></v-spacer>
@@ -17,11 +17,18 @@
 
 <script>
 export default {
-
+  data(){
+    return{
+      vTitle: 'vAppTitle'
+    }
+  }
 }
 </script>
 
 <style>
+.vAppTitle{
+  width: 300px;
+}
 #header{
   color:blue;
   padding: none
@@ -30,4 +37,5 @@ export default {
 #vApp{
   width: 100%;
 }
+
 </style>
