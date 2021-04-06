@@ -1,9 +1,9 @@
 <template>
   <div id="headerAuth">
     <v-app-bar color="#9575CD">
-      <v-tool-bar-title class="ml-5" :style="width='300px'" width="300" id="title">
+      <v-app-bar-title class="ml-5" :style="width='300px'" width="300" id="title">
         Review Movies
-      </v-tool-bar-title>
+      </v-app-bar-title>
       <v-spacer></v-spacer>
       <v-btn text @click="$router.push('/')">
         Sign In

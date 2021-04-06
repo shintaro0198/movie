@@ -1,13 +1,13 @@
 <template>
   <div id="header">
     <v-app-bar width="100%" fluid id="vApp">
-      <v-tool-bar-title class="ml-5">
+      <v-app-bar-title class="ml-5">
         Review Movies
-      </v-tool-bar-title>
+      </v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-tool-bar-title class="mr-5">
+      <v-toolbar-title class="mr-5">
         Home
-      </v-tool-bar-title>
+      </v-toolbar-title>
       <v-icon large color="blue" class="mr-5">
         mdi-account
       </v-icon>
