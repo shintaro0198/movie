@@ -41,6 +41,9 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+html{
+  font-family: "Yu Gothic";
+}
 body {
   line-height: 1;
 }
@@ -58,5 +61,12 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+.v-application{
+  font-family: "Yu Gothic";
+}
+.header-title{
+  font-size: 25px;
+  text-align: center;
 }
 </style>

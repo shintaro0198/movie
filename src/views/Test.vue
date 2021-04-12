@@ -1,6 +1,7 @@
 <template>
-  <div id="movies">
-    Movies
+  <div id="test">
+    <v-calendar>
+    </v-calendar>
   </div>
 </template>
 
