@@ -10,8 +10,8 @@
       </v-col>
     </v-row>
     
-    <NowAvailable :page='page'
-    v-if="attensiton==1"></NowAvailable>
+    <NowPlaying :page='page'
+    v-if="attensiton==1"></NowPlaying>
     <Popular :page='page'
     v-else-if="attensiton==2"></Popular>
     <TopRated :page='page'
@@ -37,6 +37,9 @@ export default  {
   methods:{
     
   },
+  async created(){
+    console.log(this.$store.state.auth)
+  }
 }
 </script>
 

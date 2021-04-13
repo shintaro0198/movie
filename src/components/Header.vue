@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data(){
     return{
@@ -28,9 +29,13 @@ export default {
     }
   },
   methods:{
-    logout(){
-      this.$store.dispatch('logout')
+    async logout(){
+      await axios.post('http://obscure-refuge-57581.herokuapp.com/api/logout')
+      .then(response => {
+        this.$store.commit('auth', response.data.auth)
+      })
       this.$store.dispatch('reload')
+      
     }
   }
 }

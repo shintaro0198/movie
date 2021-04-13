@@ -15,18 +15,26 @@ const routes = [
     path: '/home/:id',
     name: 'Home',
     component: Home,
-    props:true
+    props: true,
+    meta: {
+      requiresAuth :true
+    }
+    
   },
   {
     path: '/detail/:movie_id',
     name: 'Detail',
     component: Detail,
-    props:true
+    props: true,
+    meta: {
+      requiresAuth :true
+    }
   },
   {
     path: '/',
     name: 'Login',
     component: Login
+    
   },
   {
     path: '/signup',
@@ -36,12 +44,18 @@ const routes = [
   {
     path: '/profile',
     name: 'Profile',
-    component: Profile
+    component: Profile,
+    meta: {
+      requiresAuth :true
+    }
   },
   {
     path: '/test',
     name: 'Test',
-    component : Test
+    component: Test,
+    meta: {
+      requiresAuth :true
+    }
   }
 ]
 
@@ -52,9 +66,21 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && store.state.auth !== true) {
-    next('/')
-  } else next()
-})
+  if (
+    to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.state.auth !== true) {
+      next({
+        path: "/",
+        query: {
+          redirect: to.fullPath,
+        },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router

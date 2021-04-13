@@ -6,7 +6,7 @@
     @input="pageTransition">
     </v-pagination>
     <v-layout wrap justify-center>
-      <v-card v-for="item in list" :key="item.title" max-width="300" class="mt-5 mx-auto">
+      <v-card v-for="item in list" :key="item.title" max-width="300" class="mt-5 mb-5 mx-auto">
         <v-card-title>
           <v-btn text @click="toDetail(item.id)" class="font-weight-bold">
           {{item.title}}
@@ -26,9 +26,8 @@
       </v-card>
     </v-layout>
     <v-pagination :length="10" total-visible="7" v-model="page"
-    @input="pageTransition" class="mt-5">
+    @input="pageTransition" class="mt-5 mb-10">
     </v-pagination>
-    <p>{{page}}</p>
   </div>
 </template>
 
@@ -60,35 +59,23 @@ export default {
       axios.get('https://api.themoviedb.org/3/movie/now_playing?api_key=8c22a9322c82498433fb00700b530e92&language=ja-JP&page=' + this.page)
     .then(response=>{
       this.list = []
-      console.log(response)
       for(let i = 0;i<response.data.results.length;i++){
         const movie= response.data.results[i]
-        const review = axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movie.id}`)
+        axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movie.id}`)
         .then(response=>{
             let sum= 0
             for(let i = 0;i<response.data.data.length;i++){
               sum += parseFloat(response.data.data[i].content)
             }
             this.average = sum/response.data.data.length
-         
-            console.log('reviewの処理')
-            console.log(this.average)
-        })
-        review.then(function(){
-               console.log('review後の処理')
-               console.log(review)
-               console.log(movie.id)
-               console.log(this.average)
-        const data = {
-          title : movie.title,
-          id : movie.id,
-          rating : this.average,
-          img : movie.poster_path,
-        }
-       console.log(data)
-        this.list.push(data)
-        })
-        
+            const data = {
+              title : movie.title,
+              id : movie.id,
+              rating : this.average,
+              img : movie.poster_path,
+            }
+            this.list.push(data)
+        })     
       }
     })
     }
