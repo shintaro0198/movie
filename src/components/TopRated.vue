@@ -44,56 +44,77 @@ export default {
     async getReviewed(){
       axios.get('http://obscure-refuge-57581.herokuapp.com/api/reviewAll')
       .then(response=>{
-        for(let i = 0; i<response.data.data.length;i++){
+        this.list = []
+        console.log("a")
+          for(let i = 0; i<response.data.data.length;i++){
           const movieId = response.data.data[i].movie_id 
-          const review = axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movieId}`)
+          axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movieId}`)
           .then(response=>{
-            this.average = parseFloat(response.data.data[response.data.data.length -1].average)
-            console.log(this.average)
-            review.then(()=>{
+            const average = parseFloat(response.data.data[response.data.data.length -1].average)
+            console.log(`${i}つ目のアベレージ=${this.average}`)
               axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=8c22a9322c82498433fb00700b530e92&language=ja-JP`)
               .then(response=>{
               const detail = {
               id : movieId,
               title : response.data.title,
-              rating : this.average,
+              rating : average,
               img : response.data.poster_path
               }
               this.list.push(detail)
-              console.log(detail.rating)
+              console.log('push')
               })
-            })
-          })
-        }
+              })
+            
+            }
+
+      
+          
       })
     },
-    /**同じ挙動をしているはずなのに、detail.ratingの中身が読み込むたびに、ずれる
-     * 45行目のapi通信から送られてくるリストの中身のオブジェクトに,48から62行目までの処理を終えたら次のオブジェクトに同じ処理を順に進めてほしいが、直前のオブジェクトの処理の終了を待たずに次のオブジェクトの処理が始まりdetail.ratingにずれが生じている.
-     * 
-     */
   },
   async created(){
-    const promise = new Promise(()=>{
-      this.getReviewed()
-    })
-    promise.then(()=>{
-        this.list.sort(function(a,b){
-      a.average > b.average
-    })
-    }).then(()=>{
-      console.log(this.list)
-
-    /**定数を定義せず、
-     * this.getReviewed()
-     * .then(()=>{
-     * this.list.sort~
-     * console.log(this.list)})
-     * と記述した場合はconsole.logは行われるがthis.getReviewedの処理を待たない。
-     * awaitで記述した場合も同様に処理を待たずに実行される。
-     * async created内に直接getReviewedの内容を記述した場合も同様。
-     */
-  })
-}
+      const promise = new Promise((resolve)=>{
+        const a = axios.get('http://obscure-refuge-57581.herokuapp.com/api/reviewAll')
+        resolve(a)
+      })
+      promise.then((result)=>{
+         this.list = []
+          console.log("promise内の処理１")
+            for(let i = 0; i<result.data.data.length;i++){
+            const movieId = result.data.data[i].movie_id 
+            const promise2 = new Promise((resolve)=>{
+              const b= axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movieId}`)
+              resolve(b)
+            })
+            promise2.then((result)=>{
+              const average = parseFloat(result.data.data[result.data.data.length -1].average)
+              console.log(`これを待たない`)
+              const promise3 = new Promise((resolve)=>{
+                const c =axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=8c22a9322c82498433fb00700b530e92&language=ja-JP`)
+                resolve(c)
+              })
+              promise3.then((result)=>{
+                const detail = {
+                id : movieId,
+                title : result.data.title,
+                rating : average,
+                img : result.data.poster_path
+                }
+                this.list.push(detail)
+                console.log('push')
+              }) 
+                })
+              }
+            console.log('promise終了')
+       }) 
+       .then(()=>{
+         this.list.sort(function(a,b){
+            a.rating - b.rating
+          })
+            console.log(this.list)
+            console.log('promise後の処理')
+       })
+  }
 }
 </script>
 
