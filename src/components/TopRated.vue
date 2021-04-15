@@ -77,43 +77,47 @@ export default {
         const a = axios.get('http://obscure-refuge-57581.herokuapp.com/api/reviewAll')
         resolve(a)
       })
-      promise.then((result)=>{
-         this.list = []
+      const promiseA = new Promise((resolve)=>{
+        promise.then((result)=>{
           console.log("promise内の処理１")
-            for(let i = 0; i<result.data.data.length;i++){
-            const movieId = result.data.data[i].movie_id 
-            const promise2 = new Promise((resolve)=>{
-              const b= axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movieId}`)
-              resolve(b)
-            })
+          for(let i = 0; i<result.data.data.length;i++){
+          const movieId = result.data.data[i].movie_id 
+          const promise2 = new Promise((resolve)=>{
+            const b= axios.get(`http://obscure-refuge-57581.herokuapp.com/api/review?movie_id=${movieId}`)
+            resolve(b)
+          })
+          const promise3 = ((resolve)=>{
             promise2.then((result)=>{
-              const average = parseFloat(result.data.data[result.data.data.length -1].average)
-              console.log(`これを待たない`)
-              const promise3 = new Promise((resolve)=>{
-                const c =axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=8c22a9322c82498433fb00700b530e92&language=ja-JP`)
-                resolve(c)
-              })
-              promise3.then((result)=>{
-                const detail = {
-                id : movieId,
-                title : result.data.title,
-                rating : average,
-                img : result.data.poster_path
-                }
-                this.list.push(detail)
-                console.log('push')
-              }) 
-                })
+            const average = parseFloat(result.data.data[result.data.data.length -1].average)
+            console.log(`これを待たない`)
+            const promise4 = new Promise((resolve)=>{
+              const c =axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=8c22a9322c82498433fb00700b530e92&language=ja-JP`)
+              resolve(c)
+            })
+            const promise5 = new Promise((resolve)=>{
+              promise4.then((result)=>{
+              const detail = {
+              id : movieId,
+              title : result.data.title,
+              rating : average,
+              img : result.data.poster_path
               }
+              this.list.push(detail)
+              console.log('push')
+              resolve()
+            }) 
+            })
+            Promise.all([promise4,promise5]).then(()=>{
+              resolve()
+            })
+              })
+          })
+            }
+          Promise.all([promise2,promise3]) /**これがダメ */
             console.log('promise終了')
        }) 
-       .then(()=>{
-         this.list.sort(function(a,b){
-            a.rating - b.rating
-          })
-            console.log(this.list)
-            console.log('promise後の処理')
-       })
+      })
+       
   }
 }
 </script>
